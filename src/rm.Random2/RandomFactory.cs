@@ -10,6 +10,7 @@ namespace rm.Random2
 		private static readonly Random _random = new Random();
 		private static readonly LockRandom _lockRandom = new LockRandom();
 		private static readonly ThreadStaticRandom _threadStaticRandom = new ThreadStaticRandom();
+		private static readonly ThreadLocalRandom _threadLocalRandom = new ThreadLocalRandom();
 
 		public static Random GetRandom()
 		{
@@ -24,6 +25,11 @@ namespace rm.Random2
 		public static ThreadStaticRandom GetThreadStaticRandom()
 		{
 			return _threadStaticRandom;
+		}
+
+		public static ThreadLocalRandom GetThreadLocalRandom()
+		{
+			return _threadLocalRandom;
 		}
 	}
 }

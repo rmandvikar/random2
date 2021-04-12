@@ -33,6 +33,13 @@ namespace rm.Random2Test
 				VerifyCorrectness(RandomFactory.GetThreadStaticRandom());
 			}
 
+			[Explicit]
+			[Test]
+			public void Verify_Correctness_ThreadLocalRandom()
+			{
+				VerifyCorrectness(RandomFactory.GetThreadLocalRandom());
+			}
+
 			private void VerifyCorrectness(Random random)
 			{
 				const int iterations = 1_000_000;
@@ -88,6 +95,12 @@ namespace rm.Random2Test
 			public void Verify_Perf_ThreadStaticRandom()
 			{
 				VerifyPerf(RandomFactory.GetThreadStaticRandom());
+			}
+
+			[Test]
+			public void Verify_Perf_ThreadLocalRandom()
+			{
+				VerifyPerf(RandomFactory.GetThreadLocalRandom());
 			}
 
 			private void VerifyPerf(Random random)
