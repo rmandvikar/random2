@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using rm.Random2;
@@ -65,6 +66,40 @@ namespace rm.Random2Test
 						break;
 					}
 				}
+			}
+		}
+
+		[TestFixture]
+		public class Verify_Perf
+		{
+			[Test]
+			public void Verify_Perf_Random()
+			{
+				VerifyPerf(RandomFactory.GetRandom());
+			}
+
+			[Test]
+			public void Verify_Perf_RandomLocked()
+			{
+				VerifyPerf(RandomFactory.GetRandomLocked());
+			}
+
+			[Test]
+			public void Verify_Perf_RandomPerThread()
+			{
+				VerifyPerf(RandomFactory.GetRandomPerThread());
+			}
+
+			private void VerifyPerf(Random random)
+			{
+				const int iterations = 10_000_000;
+				var sw = Stopwatch.StartNew();
+				Parallel.For(0, iterations, i =>
+				{
+					random.Next();
+				});
+				sw.Stop();
+				Console.WriteLine(sw.ElapsedMilliseconds);
 			}
 		}
 	}
