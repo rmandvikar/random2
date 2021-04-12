@@ -11,7 +11,7 @@ namespace rm.Random2
 		private readonly RNGCryptoServiceProvider _rngCrypto = new RNGCryptoServiceProvider();
 
 		[ThreadStatic]
-		private Random _randomLocal;
+		private static Random _randomLocal;
 
 		private bool _disposed = false;
 
