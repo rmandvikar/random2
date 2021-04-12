@@ -115,5 +115,43 @@ namespace rm.Random2Test
 				Console.WriteLine(sw.ElapsedMilliseconds);
 			}
 		}
+
+		[TestFixture]
+		public class Verify_Distribution
+		{
+			[Test]
+			public void Verify_Distribution_Random()
+			{
+				VerifyDistribution(RandomFactory.GetRandom());
+			}
+
+			[Test]
+			public void Verify_Distribution_RandomLocked()
+			{
+				VerifyDistribution(RandomFactory.GetRandomLocked());
+			}
+
+			[Test]
+			public void Verify_Distribution_RandomPerThread()
+			{
+				VerifyDistribution(RandomFactory.GetRandomPerThread());
+			}
+
+			[Test]
+			public void Verify_Distribution_ThreadLocalRandom()
+			{
+				VerifyDistribution(RandomFactory.GetThreadLocalRandom());
+			}
+
+			private void VerifyDistribution(Random random)
+			{
+				const int iterations = 100;
+				Parallel.For(0, iterations, i =>
+				{
+					var next = random.Next(10);
+					Console.WriteLine(next);
+				});
+			}
+		}
 	}
 }
