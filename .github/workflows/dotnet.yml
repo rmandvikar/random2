@@ -17,3 +17,11 @@ jobs:
       run: |
         dotnet build rm.Random2.sln \
           -c Release
+    # net5.0 only as test csproj also targets others
+    - name: Test
+      run: |
+        dotnet test tests/rm.Random2Test/rm.Random2Test.csproj \
+          -c Release --no-build --no-restore \
+          -f net5.0 \
+          -v normal \
+          --filter "TestCategory!=very.slow"
