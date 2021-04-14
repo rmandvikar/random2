@@ -80,6 +80,32 @@ namespace rm.Random2Test
 					Console.WriteLine();
 				}
 			}
+
+			[Test]
+			public void Mimic_Thread_Affinity_RNGs_As_ThreadStatic_And_ThreadLocal()
+			{
+				const int LIMIT = 200;
+
+				// create global RNG
+				var globalRandom = new Random();
+
+				// repeat experiment with different global RNGs
+				for (int ithreads = 0; ithreads < 30; ++ithreads)
+				{
+					// obtain seed from global RNG
+					var seed = globalRandom.Next();
+
+					// create main RNG from seed
+					var random = new Random(seed);
+
+					for (int i = 0; i < 100; i++)
+					{
+						Console.Write("{0,3}", random.Next(LIMIT));
+						Console.Write(", ");
+					}
+					Console.WriteLine();
+				}
+			}
 		}
 
 		[TestFixture]
