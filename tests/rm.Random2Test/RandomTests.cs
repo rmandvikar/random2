@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using rm.Random2;
@@ -9,6 +10,48 @@ namespace rm.Random2Test
 	[TestFixture]
 	public class RandomTests
 	{
+		public class Showcase_Issues
+		{
+			private static readonly object _lock = new object();
+
+			[Test]
+			[TestCase(false)]
+			[TestCase(true)]
+			public void Random_Instances_In_Quick_Succession_Give_Same_Results_In_NetFramework(bool delay)
+			{
+				lock (_lock)
+				{
+					var random1 = new Random();
+
+					/// <note>
+					/// delay of 15ms+ (time interval after which <see cref="Environment.TickCount"/> changes)
+					/// causes the random values to be different.
+					/// </note>
+					if (delay)
+					{
+						Thread.Sleep(15);
+					}
+
+					lock (_lock)
+					{
+						var random2 = new Random();
+
+						Console.WriteLine("The first random number generator:");
+						for (int ctr = 1; ctr <= 10; ctr++)
+						{
+							Console.WriteLine("   {0}", random1.Next());
+						}
+
+						Console.WriteLine("The second random number generator:");
+						for (int ctr = 1; ctr <= 10; ctr++)
+						{
+							Console.WriteLine("   {0}", random2.Next());
+						}
+					}
+				}
+			}
+		}
+
 		[TestFixture]
 		public class Verify_Correctness
 		{
