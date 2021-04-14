@@ -50,6 +50,36 @@ namespace rm.Random2Test
 					}
 				}
 			}
+
+			[Test]
+			public void Random_Instances_With_Global_And_Child_Instances_Exhibit_Patterns()
+			{
+				const int OFFSET = 1337;
+				const int LIMIT = 200;
+
+				// repeat experiment with different global RNGs
+				for (int iGlobal = 0; iGlobal < 30; ++iGlobal)
+				{
+					// create global RNG
+					var globalRandom = new Random(iGlobal + OFFSET);
+
+					// obtain seed from global RNG
+					var seed = globalRandom.Next();
+
+					// create main RNG from seed
+					var random = new Random(seed);
+
+					// patterns exhibited by numbers:
+					// 3rd is same number always!
+					// others exhibit patterns
+					for (int i = 0; i < 100; i++)
+					{
+						Console.Write("{0,3}", random.Next(LIMIT));
+						Console.Write(", ");
+					}
+					Console.WriteLine();
+				}
+			}
 		}
 
 		[TestFixture]
