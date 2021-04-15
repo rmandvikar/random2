@@ -106,6 +106,19 @@ namespace rm.Random2Test
 					Console.WriteLine();
 				}
 			}
+
+			[Test]
+			public void Random_Is_Deterministic()
+			{
+				const int iterations = 100;
+				const int seed = 1337;
+				var random1 = new Random(seed);
+				var random2 = new Random(seed);
+				for (int i = 0; i < iterations; i++)
+				{
+					Assert.AreEqual(random1.Next(), random2.Next());
+				}
+			}
 		}
 
 		[TestFixture]
