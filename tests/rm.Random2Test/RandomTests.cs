@@ -115,36 +115,43 @@ namespace rm.Random2Test
 			[Test(Description = "Next() results in 0s once in a while.")]
 			public void Verify_Correctness_Random()
 			{
-				VerifyCorrectness(RandomFactory.GetRandom());
+				VerifyCorrectness(() => RandomFactory.GetRandom().Next());
 			}
 
 			[Explicit]
 			[Test]
 			public void Verify_Correctness_LockRandom()
 			{
-				VerifyCorrectness(RandomFactory.GetLockRandom());
+				VerifyCorrectness(() => RandomFactory.GetLockRandom().Next());
 			}
 
 			[Explicit]
 			[Test]
 			public void Verify_Correctness_ThreadStaticRandom()
 			{
-				VerifyCorrectness(RandomFactory.GetThreadStaticRandom());
+				VerifyCorrectness(() => RandomFactory.GetThreadStaticRandom().Next());
 			}
 
 			[Explicit]
 			[Test]
 			public void Verify_Correctness_ThreadLocalRandom()
 			{
-				VerifyCorrectness(RandomFactory.GetThreadLocalRandom());
+				VerifyCorrectness(() => RandomFactory.GetThreadLocalRandom().Next());
 			}
 
-			private void VerifyCorrectness(Random random)
+			[Explicit]
+			[Test]
+			public void Verify_Correctness_NewGuidAsSeed()
+			{
+				VerifyCorrectness(() => new Random(Guid.NewGuid().GetHashCode()).Next());
+			}
+
+			private void VerifyCorrectness(Func<int> randomFunc)
 			{
 				const int iterations = 1_000_000;
 				Parallel.For(0, iterations, (i, loop) =>
 				{
-					if (random.Next() == 0)
+					if (randomFunc() == 0)
 					{
 						//loop.Stop();
 					}
@@ -154,7 +161,7 @@ namespace rm.Random2Test
 				var zeroes = 0;
 				while (true)
 				{
-					var next = random.Next();
+					var next = randomFunc();
 					Console.WriteLine(next);
 
 					var isZero = next == 0;
@@ -181,34 +188,40 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Perf_Random()
 			{
-				VerifyPerf(RandomFactory.GetRandom());
+				VerifyPerf(() => RandomFactory.GetRandom().Next());
 			}
 
 			[Test]
 			public void Verify_Perf_LockRandom()
 			{
-				VerifyPerf(RandomFactory.GetLockRandom());
+				VerifyPerf(() => RandomFactory.GetLockRandom().Next());
 			}
 
 			[Test]
 			public void Verify_Perf_ThreadStaticRandom()
 			{
-				VerifyPerf(RandomFactory.GetThreadStaticRandom());
+				VerifyPerf(() => RandomFactory.GetThreadStaticRandom().Next());
 			}
 
 			[Test]
 			public void Verify_Perf_ThreadLocalRandom()
 			{
-				VerifyPerf(RandomFactory.GetThreadLocalRandom());
+				VerifyPerf(() => RandomFactory.GetThreadLocalRandom().Next());
 			}
 
-			private void VerifyPerf(Random random)
+			[Test]
+			public void Verify_Perf_NewGuidAsSeed()
+			{
+				VerifyPerf(() => new Random(Guid.NewGuid().GetHashCode()).Next());
+			}
+
+			private void VerifyPerf(Func<int> randomFunc)
 			{
 				const int iterations = 10_000_000;
 				var sw = Stopwatch.StartNew();
 				Parallel.For(0, iterations, i =>
 				{
-					random.Next();
+					randomFunc();
 				});
 				sw.Stop();
 				Console.WriteLine(sw.ElapsedMilliseconds);
@@ -221,33 +234,39 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Distribution_Random()
 			{
-				VerifyDistribution(RandomFactory.GetRandom());
+				VerifyDistribution(() => RandomFactory.GetRandom().Next(10));
 			}
 
 			[Test]
 			public void Verify_Distribution_LockRandom()
 			{
-				VerifyDistribution(RandomFactory.GetLockRandom());
+				VerifyDistribution(() => RandomFactory.GetLockRandom().Next(10));
 			}
 
 			[Test]
 			public void Verify_Distribution_ThreadStaticRandom()
 			{
-				VerifyDistribution(RandomFactory.GetThreadStaticRandom());
+				VerifyDistribution(() => RandomFactory.GetThreadStaticRandom().Next(10));
 			}
 
 			[Test]
 			public void Verify_Distribution_ThreadLocalRandom()
 			{
-				VerifyDistribution(RandomFactory.GetThreadLocalRandom());
+				VerifyDistribution(() => RandomFactory.GetThreadLocalRandom().Next(10));
 			}
 
-			private void VerifyDistribution(Random random)
+			[Test]
+			public void Verify_Distribution_NewGuidAsSeed()
+			{
+				VerifyDistribution(() => new Random(Guid.NewGuid().GetHashCode()).Next(10));
+			}
+
+			private void VerifyDistribution(Func<int> randomFunc)
 			{
 				const int iterations = 100;
 				Parallel.For(0, iterations, i =>
 				{
-					var next = random.Next(10);
+					var next = randomFunc();
 					Console.WriteLine(next);
 				});
 			}
