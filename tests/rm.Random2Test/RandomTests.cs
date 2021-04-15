@@ -141,6 +141,13 @@ namespace rm.Random2Test
 
 			[Explicit]
 			[Test]
+			public void Verify_Correctness_NewInstance()
+			{
+				VerifyCorrectness(() => new Random().Next());
+			}
+
+			[Explicit]
+			[Test]
 			public void Verify_Correctness_NewGuidAsSeed()
 			{
 				VerifyCorrectness(() => new Random(Guid.NewGuid().GetHashCode()).Next());
@@ -210,6 +217,12 @@ namespace rm.Random2Test
 			}
 
 			[Test]
+			public void Verify_Perf_NewInstance()
+			{
+				VerifyPerf(() => new Random().Next());
+			}
+
+			[Test]
 			public void Verify_Perf_NewGuidAsSeed()
 			{
 				VerifyPerf(() => new Random(Guid.NewGuid().GetHashCode()).Next());
@@ -253,6 +266,12 @@ namespace rm.Random2Test
 			public void Verify_Distribution_ThreadLocalRandom()
 			{
 				VerifyDistribution(() => RandomFactory.GetThreadLocalRandom().Next(10));
+			}
+
+			[Test]
+			public void Verify_Distribution_NewInstance()
+			{
+				VerifyDistribution(() => new Random().Next(10));
 			}
 
 			[Test]
