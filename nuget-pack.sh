@@ -17,7 +17,6 @@ metadata="$commit_hash"
 
 dotnet pack src/rm.Random2/rm.Random2.csproj \
 	-c Release \
-	--include-symbols //p:SymbolPackageFormat=snupkg \
 	-o .nupkg/ \
 	//p:PackageVersion="$version+$metadata" \
 	//p:PackageReleaseNotes="tag: $tag" \
