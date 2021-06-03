@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/rmandvikar/random2</PackageProjectUrl>
     <Authors>hippy</Authors>
     <Company>hippy</Company>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
 </Project>
