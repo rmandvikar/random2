@@ -73,7 +73,7 @@ namespace rm.Random2
 			return _random.NextDouble();
 		}
 
-		/// <summary>See <see cref="Random.Sample() />.</summary>
+		/// <summary>See <see cref="Random.Sample()" />.</summary>
 		protected override double Sample()
 		{
 			throw new NotImplementedException();
