@@ -18,7 +18,7 @@ metadata="$commit_hash"
 dotnet pack src/rm.Random2/rm.Random2.csproj \
 	-c Release \
 	-o .nupkg/ \
-	//p:Version="$version" \
+	//p:Version="$version+$metadata" \
 	//p:PackageVersion="$version+$metadata" \
 	//p:PackageReleaseNotes="tag: $tag" \
 	&& git tag "$tag" -m "Create nuget tag $tag"
