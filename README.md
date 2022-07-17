@@ -30,12 +30,21 @@ Random doesn't inherit from an interface so the implementations inherit from Ran
 
 | Test (net5.0)                  |   Time (ms) |
 | :-                             |          -: |
-| Verify_Perf_NewInstance        |        3198 |
-| Verify_Perf_Random (BUG!)      |         252 |
-| Verify_Perf_NewGuidAsSeed      |        3225 |
-| Verify_Perf_LockRandom         |         663 |
+| Verify_Perf_NewInstance        |        2673 |
+| Verify_Perf_Random (BUG!)      |         237 |
+| Verify_Perf_NewGuidAsSeed      |        2758 |
+| Verify_Perf_LockRandom         |         638 |
 | Verify_Perf_ThreadLocalRandom  |          80 |
-| Verify_Perf_ThreadStaticRandom |          66 |
+| Verify_Perf_ThreadStaticRandom |          55 |
+
+| Test (net6.0)                  |   Time (ms) |
+| :-                             |          -: |
+| Verify_Perf_NewInstance        |        1234 |
+| Verify_Perf_Random (BUG!)      |         208 |
+| Verify_Perf_NewGuidAsSeed      |        2557 |
+| Verify_Perf_LockRandom         |         618 |
+| Verify_Perf_ThreadLocalRandom  |          75 |
+| Verify_Perf_ThreadStaticRandom |          55 |
 
 ### Recommendations
 
