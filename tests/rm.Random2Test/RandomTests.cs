@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -302,6 +304,88 @@ namespace rm.Random2Test
 					Console.WriteLine(next);
 				});
 			}
+		}
+
+		[Explicit]
+		[Test(Description = "HashAlgorithm is not thread-safe")]
+		public void Bork_HashAlgorithm()
+		{
+			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+			var md5 = MD5.Create();
+			{
+				Parallel.For(0, iterations, (i, loop) =>
+				{
+					var hash = md5.ComputeHash(bytes);
+					//Console.WriteLine(hash);
+				});
+			}
+			//Console.WriteLine("stop");
+		}
+
+		[Explicit]
+		[Test(Description = "HashAlgorithm is not thread-safe")]
+		public void Bork_HashAlgorithm_New()
+		{
+			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+			Parallel.For(0, iterations, (i, loop) =>
+			{
+				var md5 = MD5.Create();
+				{
+					var hash = md5.ComputeHash(bytes);
+					//Console.WriteLine(hash);
+				}
+			});
+			//Console.WriteLine("stop");
+		}
+
+		[Explicit]
+		[Test(Description = "HashAlgorithm is not thread-safe")]
+		public void Bork_HashAlgorithm_ThreadStatic()
+		{
+			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+			Parallel.For(0, iterations, (i, loop) =>
+			{
+				var md5 = CreateHashAlgorithmIfNull();
+				var hash = md5.ComputeHash(bytes);
+				//var hex = BitConverter.ToString(hash);
+				//Console.WriteLine(hex);
+			});
+			//Console.WriteLine("stop");
+		}
+
+		[Explicit]
+		[Test(Description = "HashAlgorithm is not thread-safe")]
+		public void Bork_HashAlgorithm_Static()
+		{
+			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+			Parallel.For(0, iterations, (i, loop) =>
+			{
+				var hash = new byte[16];
+				if (!MD5.TryHashData(bytes, hash, out var count))
+				{
+					throw new InvalidOperationException();
+				}
+				//var hex = BitConverter.ToString(hash);
+				//Console.WriteLine(hex);
+			});
+			//Console.WriteLine("stop");
+		}
+
+		const int iterations = 1_000_000;
+
+		[ThreadStatic]
+		private static HashAlgorithm hashAlgorithm;
+		private HashAlgorithm CreateHashAlgorithmIfNull()
+		{
+			var hashAlgorithmThread = hashAlgorithm;
+			if (hashAlgorithmThread == null)
+			{
+				hashAlgorithm = hashAlgorithmThread = MD5.Create();
+			}
+			return hashAlgorithmThread;
 		}
 	}
 }
