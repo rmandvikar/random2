@@ -330,7 +330,7 @@ namespace rm.Random2Test
 
 			Parallel.For(0, iterations, (i, loop) =>
 			{
-				var md5 = MD5.Create();
+				using var md5 = MD5.Create();
 				{
 					var hash = md5.ComputeHash(bytes);
 					//Console.WriteLine(hash);
@@ -357,17 +357,13 @@ namespace rm.Random2Test
 
 		[Explicit]
 		[Test(Description = "HashAlgorithm is not thread-safe")]
-		public void Bork_HashAlgorithm_Static()
+		public void Bork_HashAlgorithm_StaticMethod()
 		{
 			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
 
 			Parallel.For(0, iterations, (i, loop) =>
 			{
-				var hash = new byte[16];
-				if (!MD5.TryHashData(bytes, hash, out var count))
-				{
-					throw new InvalidOperationException();
-				}
+				var hash = MD5.HashData(bytes);
 				//var hex = BitConverter.ToString(hash);
 				//Console.WriteLine(hex);
 			});
