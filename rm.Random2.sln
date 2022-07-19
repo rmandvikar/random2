@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rm.Random2", "src\rm.Random2\rm.Random2.csproj", "{536E9A14-421E-4D6D-84B7-D5FF0382DAB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rm.Random2Test", "tests\rm.Random2Test\rm.Random2Test.csproj", "{4165797D-C166-4930-8F0F-D63E230D53A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rm.Random2Test", "tests\rm.Random2Test\rm.Random2Test.csproj", "{4165797D-C166-4930-8F0F-D63E230D53A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rm.Random2Benchmark", "tests\rm.Random2Benchmark\rm.Random2Benchmark.csproj", "{1809DEAD-42A6-4711-BF3D-F145EE7F1216}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4165797D-C166-4930-8F0F-D63E230D53A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4165797D-C166-4930-8F0F-D63E230D53A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4165797D-C166-4930-8F0F-D63E230D53A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1809DEAD-42A6-4711-BF3D-F145EE7F1216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1809DEAD-42A6-4711-BF3D-F145EE7F1216}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1809DEAD-42A6-4711-BF3D-F145EE7F1216}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1809DEAD-42A6-4711-BF3D-F145EE7F1216}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
