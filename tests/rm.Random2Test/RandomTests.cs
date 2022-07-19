@@ -370,7 +370,26 @@ namespace rm.Random2Test
 			//Console.WriteLine("stop");
 		}
 
-		const int iterations = 1_000_000;
+		[Explicit]
+		[Test(Description = "HashAlgorithm is not thread-safe")]
+		public void Bork_HashAlgorithm_StaticMethodTry()
+		{
+			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+			Parallel.For(0, iterations, (i, loop) =>
+			{
+				var hash = new Span<byte>(new byte[16]);
+				if (!MD5.TryHashData(bytes, hash, out var _))
+				{
+					throw new InvalidOperationException();
+				}
+				//var hex = BitConverter.ToString(hash);
+				//Console.WriteLine(hex);
+			});
+			//Console.WriteLine("stop");
+		}
+
+		const int iterations = 10_000_000;
 
 		[ThreadStatic]
 		private static HashAlgorithm hashAlgorithm;
