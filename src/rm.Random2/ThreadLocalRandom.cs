@@ -16,13 +16,13 @@ namespace rm.Random2
 		/// which are then used to create new random number
 		/// generators on a per-thread basis.
 		/// </summary>
-		private static readonly Random _globalRandom = new Random();
-		private static readonly object _lock = new object();
+		private static readonly Random globalRandom = new Random();
+		private static readonly object locker = new object();
 
 		/// <summary>
 		/// Random number generator.
 		/// </summary>
-		private static readonly ThreadLocal<Random> _threadRandom = new ThreadLocal<Random>(NewRandom);
+		private static readonly ThreadLocal<Random> threadRandom = new ThreadLocal<Random>(NewRandom);
 
 		/// <summary>
 		/// Creates a new instance of Random. The seed is derived
@@ -31,13 +31,13 @@ namespace rm.Random2
 		/// </summary>
 		private static Random NewRandom()
 		{
-			lock (_lock)
+			lock (locker)
 			{
-				return new Random(_globalRandom.Next());
+				return new Random(globalRandom.Next());
 			}
 		}
 
-		private static Random _random => _threadRandom.Value;
+		private static Random random => threadRandom.Value;
 
 		internal ThreadLocalRandom()
 			: base()
@@ -46,31 +46,31 @@ namespace rm.Random2
 		/// <summary>See <see cref="Random.Next()" />.</summary>
 		public override int Next()
 		{
-			return _random.Next();
+			return random.Next();
 		}
 
 		/// <summary>See <see cref="Random.Next(int)" />.</summary>
 		public override int Next(int maxValue)
 		{
-			return _random.Next(maxValue);
+			return random.Next(maxValue);
 		}
 
 		/// <summary>See <see cref="Random.Next(int, int)" />.</summary>
 		public override int Next(int minValue, int maxValue)
 		{
-			return _random.Next(minValue, maxValue);
+			return random.Next(minValue, maxValue);
 		}
 
 		/// <summary>See <see cref="Random.NextBytes(byte[])" />.</summary>
 		public override void NextBytes(byte[] buffer)
 		{
-			_random.NextBytes(buffer);
+			random.NextBytes(buffer);
 		}
 
 		/// <summary>See <see cref="Random.NextDouble()" />.</summary>
 		public override double NextDouble()
 		{
-			return _random.NextDouble();
+			return random.NextDouble();
 		}
 
 		/// <summary>See <see cref="Random.Sample()" />.</summary>

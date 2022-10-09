@@ -8,12 +8,12 @@ namespace rm.Random2
 	/// </note>
 	public class ThreadStaticRandom : Random, IDisposable
 	{
-		private readonly RNGCryptoServiceProvider _rngCrypto = new RNGCryptoServiceProvider();
+		private readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
 
 		[ThreadStatic]
-		private static Random _randomLocal;
+		private static Random randomLocal;
 
-		private bool _disposed = false;
+		private bool disposed = false;
 
 		internal ThreadStaticRandom()
 			: base()
@@ -26,23 +26,23 @@ namespace rm.Random2
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (_disposed)
+			if (disposed)
 			{
 				return;
 			}
 			if (disposing)
 			{
-				_rngCrypto?.Dispose();
+				rngCrypto?.Dispose();
 			}
-			_disposed = true;
+			disposed = true;
 		}
 
 		private Random CreateRandomIfNull()
 		{
-			var random = _randomLocal;
+			var random = randomLocal;
 			if (random == null)
 			{
-				_randomLocal = random = CreateRandom();
+				randomLocal = random = CreateRandom();
 			}
 			return random;
 		}
@@ -50,7 +50,7 @@ namespace rm.Random2
 		private Random CreateRandom()
 		{
 			byte[] buffer = new byte[4];
-			_rngCrypto.GetBytes(buffer);
+			rngCrypto.GetBytes(buffer);
 			return new Random(BitConverter.ToInt32(buffer, 0));
 		}
 

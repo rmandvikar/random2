@@ -12,14 +12,14 @@ namespace rm.Random2Test
 	{
 		public class Showcase_Issues
 		{
-			private static readonly object _lock = new object();
+			private static readonly object locker = new object();
 
 			[Test]
 			[TestCase(false)]
 			[TestCase(true)]
 			public void Random_Instances_In_Quick_Succession_Give_Same_Results_In_NetFramework(bool delay)
 			{
-				lock (_lock)
+				lock (locker)
 				{
 					var random1 = new Random();
 
@@ -32,7 +32,7 @@ namespace rm.Random2Test
 						Thread.Sleep(15);
 					}
 
-					lock (_lock)
+					lock (locker)
 					{
 						var random2 = new Random();
 

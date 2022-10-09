@@ -7,29 +7,29 @@ namespace rm.Random2
 	/// </note>
 	public static class RandomFactory
 	{
-		private static readonly Random _random = new Random();
-		private static readonly LockRandom _lockRandom = new LockRandom();
-		private static readonly ThreadStaticRandom _threadStaticRandom = new ThreadStaticRandom();
-		private static readonly ThreadLocalRandom _threadLocalRandom = new ThreadLocalRandom();
+		private static readonly Random random = new Random();
+		private static readonly LockRandom lockRandom = new LockRandom();
+		private static readonly ThreadStaticRandom threadStaticRandom = new ThreadStaticRandom();
+		private static readonly ThreadLocalRandom threadLocalRandom = new ThreadLocalRandom();
 
 		public static Random GetRandom()
 		{
-			return _random;
+			return random;
 		}
 
 		public static LockRandom GetLockRandom()
 		{
-			return _lockRandom;
+			return lockRandom;
 		}
 
 		public static ThreadStaticRandom GetThreadStaticRandom()
 		{
-			return _threadStaticRandom;
+			return threadStaticRandom;
 		}
 
 		public static ThreadLocalRandom GetThreadLocalRandom()
 		{
-			return _threadLocalRandom;
+			return threadLocalRandom;
 		}
 	}
 }

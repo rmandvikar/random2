@@ -7,7 +7,7 @@ namespace rm.Random2
 	/// </note>
 	public class LockRandom : Random
 	{
-		private readonly object _lock = new object();
+		private readonly object locker = new object();
 
 		internal LockRandom()
 			: base()
@@ -19,7 +19,7 @@ namespace rm.Random2
 
 		public override int Next()
 		{
-			lock (_lock)
+			lock (locker)
 			{
 				return base.Next();
 			}
@@ -27,7 +27,7 @@ namespace rm.Random2
 
 		public override int Next(int maxValue)
 		{
-			lock (_lock)
+			lock (locker)
 			{
 				return base.Next(maxValue);
 			}
@@ -35,7 +35,7 @@ namespace rm.Random2
 
 		public override int Next(int minValue, int maxValue)
 		{
-			lock (_lock)
+			lock (locker)
 			{
 				return base.Next(minValue, maxValue);
 			}
@@ -43,7 +43,7 @@ namespace rm.Random2
 
 		public override void NextBytes(byte[] buffer)
 		{
-			lock (_lock)
+			lock (locker)
 			{
 				base.NextBytes(buffer);
 			}
@@ -51,7 +51,7 @@ namespace rm.Random2
 
 		public override double NextDouble()
 		{
-			lock (_lock)
+			lock (locker)
 			{
 				return base.NextDouble();
 			}
@@ -59,7 +59,7 @@ namespace rm.Random2
 
 		protected override double Sample()
 		{
-			lock (_lock)
+			lock (locker)
 			{
 				return base.Sample();
 			}
