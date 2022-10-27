@@ -51,4 +51,17 @@ public class Md5Perf
 		//Console.WriteLine(hash);
 		return hash;
 	}
+
+	private readonly MD5 md5_lock = MD5.Create();
+	private readonly object locker = new();
+	[Benchmark]
+	public byte[] SharedInstance_Lock()
+	{
+		lock (locker)
+		{
+			var hash = md5_lock.ComputeHash(bytes);
+			//Console.WriteLine(hash);
+			return hash;
+		}
+	}
 }

@@ -411,6 +411,26 @@ namespace rm.Random2Test
 				//Console.WriteLine("stop");
 			}
 
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm_Lock()
+			{
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+				var locker = new object();
+				var md5 = MD5.Create();
+				{
+					Parallel.For(0, iterations, (i, loop) =>
+					{
+						lock (locker)
+						{
+							var hash = md5.ComputeHash(bytes);
+						}
+						//Console.WriteLine(hash);
+					});
+				}
+				//Console.WriteLine("stop");
+			}
+
 			const int iterations = 10_000_000;
 
 			[ThreadStatic]
