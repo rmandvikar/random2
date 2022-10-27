@@ -306,101 +306,124 @@ namespace rm.Random2Test
 			}
 		}
 
-		[Explicit]
-		[Test(Description = "HashAlgorithm is not thread-safe")]
-		public void Bork_HashAlgorithm()
+		[TestFixture]
+		public class HashAlgorithmTests
 		{
-			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
-			var md5 = MD5.Create();
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm()
 			{
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+				var md5 = MD5.Create();
+				{
+					Parallel.For(0, iterations, (i, loop) =>
+					{
+						var hash = md5.ComputeHash(bytes);
+						//Console.WriteLine(hash);
+					});
+				}
+				//Console.WriteLine("stop");
+			}
+
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm_New()
+			{
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
 				Parallel.For(0, iterations, (i, loop) =>
 				{
-					var hash = md5.ComputeHash(bytes);
-					//Console.WriteLine(hash);
+					using var md5 = MD5.Create();
+					{
+						var hash = md5.ComputeHash(bytes);
+						//Console.WriteLine(hash);
+					}
 				});
+				//Console.WriteLine("stop");
 			}
-			//Console.WriteLine("stop");
-		}
 
-		[Explicit]
-		[Test(Description = "HashAlgorithm is not thread-safe")]
-		public void Bork_HashAlgorithm_New()
-		{
-			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
-
-			Parallel.For(0, iterations, (i, loop) =>
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm_ThreadStatic()
 			{
-				using var md5 = MD5.Create();
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+				Parallel.For(0, iterations, (i, loop) =>
 				{
+					var md5 = CreateHashAlgorithmIfNull();
 					var hash = md5.ComputeHash(bytes);
-					//Console.WriteLine(hash);
-				}
-			});
-			//Console.WriteLine("stop");
-		}
-
-		[Explicit]
-		[Test(Description = "HashAlgorithm is not thread-safe")]
-		public void Bork_HashAlgorithm_ThreadStatic()
-		{
-			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
-
-			Parallel.For(0, iterations, (i, loop) =>
-			{
-				var md5 = CreateHashAlgorithmIfNull();
-				var hash = md5.ComputeHash(bytes);
-				//var hex = BitConverter.ToString(hash);
-				//Console.WriteLine(hex);
-			});
-			//Console.WriteLine("stop");
-		}
-
-		[Explicit]
-		[Test(Description = "HashAlgorithm is not thread-safe")]
-		public void Bork_HashAlgorithm_StaticMethod()
-		{
-			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
-
-			Parallel.For(0, iterations, (i, loop) =>
-			{
-				var hash = MD5.HashData(bytes);
-				//var hex = BitConverter.ToString(hash);
-				//Console.WriteLine(hex);
-			});
-			//Console.WriteLine("stop");
-		}
-
-		[Explicit]
-		[Test(Description = "HashAlgorithm is not thread-safe")]
-		public void Bork_HashAlgorithm_StaticMethodTry()
-		{
-			var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
-
-			Parallel.For(0, iterations, (i, loop) =>
-			{
-				var hash = new Span<byte>(new byte[16]);
-				if (!MD5.TryHashData(bytes, hash, out var _))
-				{
-					throw new InvalidOperationException();
-				}
-				//var hex = BitConverter.ToString(hash);
-				//Console.WriteLine(hex);
-			});
-			//Console.WriteLine("stop");
-		}
-
-		const int iterations = 10_000_000;
-
-		[ThreadStatic]
-		private static HashAlgorithm hashAlgorithm;
-		private HashAlgorithm CreateHashAlgorithmIfNull()
-		{
-			var hashAlgorithmThread = hashAlgorithm;
-			if (hashAlgorithmThread == null)
-			{
-				hashAlgorithm = hashAlgorithmThread = MD5.Create();
+					//var hex = BitConverter.ToString(hash);
+					//Console.WriteLine(hex);
+				});
+				//Console.WriteLine("stop");
 			}
-			return hashAlgorithmThread;
+
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm_ThreadLocal()
+			{
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+				Parallel.For(0, iterations, (i, loop) =>
+				{
+					var hash = hashAlgorithmThreadLocal.Value.ComputeHash(bytes);
+					//var hex = BitConverter.ToString(hash);
+					//Console.WriteLine(hex);
+				});
+				//Console.WriteLine("stop");
+			}
+
+			private static ThreadLocal<HashAlgorithm> hashAlgorithmThreadLocal =
+				new ThreadLocal<HashAlgorithm>(() => Md5Factory);
+			private static MD5 Md5Factory => MD5.Create();
+
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm_StaticMethod()
+			{
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+				Parallel.For(0, iterations, (i, loop) =>
+				{
+					var hash = MD5.HashData(bytes);
+					//var hex = BitConverter.ToString(hash);
+					//Console.WriteLine(hex);
+				});
+				//Console.WriteLine("stop");
+			}
+
+			[Explicit]
+			[Test(Description = "HashAlgorithm is not thread-safe")]
+			public void Bork_HashAlgorithm_StaticMethodTry()
+			{
+				var bytes = Encoding.UTF8.GetBytes("the overtinkerer");
+
+				Parallel.For(0, iterations, (i, loop) =>
+				{
+					var hash = new Span<byte>(new byte[16]);
+					if (!MD5.TryHashData(bytes, hash, out var _))
+					{
+						throw new InvalidOperationException();
+					}
+					//var hex = BitConverter.ToString(hash);
+					//Console.WriteLine(hex);
+				});
+				//Console.WriteLine("stop");
+			}
+
+			const int iterations = 10_000_000;
+
+			[ThreadStatic]
+			private static HashAlgorithm hashAlgorithmThreadStatic;
+			private HashAlgorithm CreateHashAlgorithmIfNull()
+			{
+				var hashAlgorithmThread = hashAlgorithmThreadStatic;
+				if (hashAlgorithmThread == null)
+				{
+					hashAlgorithmThreadStatic = hashAlgorithmThread = MD5.Create();
+				}
+				return hashAlgorithmThread;
+			}
 		}
 	}
 }
