@@ -1,5 +1,7 @@
 # Random
 
+[![NuGet version (rm.Random2)](https://img.shields.io/nuget/v/rm.Random2.svg?style=flat-square)](https://www.nuget.org/packages/rm.Random2/)
+
 ### Background
 
 See: https://csharpindepth.com/articles/Random
