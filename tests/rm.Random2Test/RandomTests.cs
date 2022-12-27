@@ -166,6 +166,15 @@ namespace rm.Random2Test
 				VerifyCorrectness(() => new Random(Guid.NewGuid().GetHashCode()).Next());
 			}
 
+#if NET6_0_OR_GREATER
+			[Explicit]
+			[Test]
+			public void Verify_Correctness_SharedRandom()
+			{
+				VerifyCorrectness(() => RandomFactory.GetSharedRandom().Next());
+			}
+#endif
+
 			private void VerifyCorrectness(Func<int> randomFunc)
 			{
 				const int iterations = 1_000_000;
@@ -241,6 +250,14 @@ namespace rm.Random2Test
 				VerifyPerf(() => new Random(Guid.NewGuid().GetHashCode()).Next());
 			}
 
+#if NET6_0_OR_GREATER
+			[Test]
+			public void Verify_Perf_SharedRandom()
+			{
+				VerifyPerf(() => RandomFactory.GetSharedRandom().Next());
+			}
+#endif
+
 			private void VerifyPerf(Func<int> randomFunc)
 			{
 				const int iterations = 10_000_000;
@@ -292,6 +309,14 @@ namespace rm.Random2Test
 			{
 				VerifyDistribution(() => new Random(Guid.NewGuid().GetHashCode()).Next(10));
 			}
+
+#if NET6_0_OR_GREATER
+			[Test]
+			public void Verify_Distribution_SharedRandom()
+			{
+				VerifyDistribution(() => RandomFactory.GetSharedRandom().Next(10));
+			}
+#endif
 
 			private void VerifyDistribution(Func<int> randomFunc)
 			{

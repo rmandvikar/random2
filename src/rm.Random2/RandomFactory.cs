@@ -31,5 +31,12 @@ namespace rm.Random2
 		{
 			return threadLocalRandom;
 		}
+
+#if NET6_0_OR_GREATER
+		public static Random GetSharedRandom()
+		{
+			return Random.Shared;
+		}
+#endif
 	}
 }
