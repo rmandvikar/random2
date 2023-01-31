@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace rm.Random2
@@ -47,6 +48,9 @@ namespace rm.Random2
 			return random;
 		}
 
+		// borrowed from
+		// https://github.com/dotnet/runtime/pull/50297/files#diff-6fa7e54f57878bb019a11332aeeb42c75430a0ac87c78cdfa9ce382137b3d851R189-R190
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		private Random CreateRandom()
 		{
 			byte[] buffer = new byte[4];
