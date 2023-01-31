@@ -7,18 +7,22 @@ namespace rm.Random2
 	/// <note>
 	/// see https://devblogs.microsoft.com/pfxteam/getting-random-numbers-in-a-thread-safe-way/
 	/// </note>
-	public class ThreadStaticRandom : Random, IDisposable
+	public class ThreadStaticRandom : Random
+#if !NET6_0_OR_GREATER
+		, IDisposable
+#endif
 	{
-		private readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
-
 		[ThreadStatic]
 		private static Random randomLocal;
-
-		private bool disposed = false;
 
 		internal ThreadStaticRandom()
 			: base()
 		{ }
+
+#if !NET6_0_OR_GREATER
+		private readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
+
+		private bool disposed = false;
 
 		public void Dispose()
 		{
@@ -37,6 +41,7 @@ namespace rm.Random2
 			}
 			disposed = true;
 		}
+#endif
 
 		private Random CreateRandomIfNull()
 		{
@@ -53,8 +58,13 @@ namespace rm.Random2
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private Random CreateRandom()
 		{
-			byte[] buffer = new byte[4];
+			const int bytesCount = 4;
+#if NET6_0_OR_GREATER
+			byte[] buffer = RandomNumberGenerator.GetBytes(bytesCount);
+#else
+			byte[] buffer = new byte[bytesCount];
 			rngCrypto.GetBytes(buffer);
+#endif
 			return new Random(BitConverter.ToInt32(buffer, 0));
 		}
 
