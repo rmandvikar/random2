@@ -8,9 +8,6 @@ namespace rm.Random2
 	/// see https://devblogs.microsoft.com/pfxteam/getting-random-numbers-in-a-thread-safe-way/
 	/// </note>
 	public class ThreadStaticRandom : Random
-#if !NET6_0_OR_GREATER
-		, IDisposable
-#endif
 	{
 		[ThreadStatic]
 		private static Random randomLocal;
@@ -20,27 +17,7 @@ namespace rm.Random2
 		{ }
 
 #if !NET6_0_OR_GREATER
-		private readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
-
-		private bool disposed = false;
-
-		public void Dispose()
-		{
-			Dispose(true);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposed)
-			{
-				return;
-			}
-			if (disposing)
-			{
-				rngCrypto?.Dispose();
-			}
-			disposed = true;
-		}
+		private static readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
 #endif
 
 		private Random CreateRandomIfNull()
