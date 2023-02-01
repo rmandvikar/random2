@@ -15,11 +15,11 @@ TLDR, Random in C# has 2 problems that developers have to code around:
 
 ### Random API
 
-Random doesn't inherit from an interface so the implementations inherit from Random versus a static class. This makes it easier to swap in whichever implementation that suits the need. `RandomFactory` gives out a singleton instance of the implementations as a single Random instance per app domain is the recommendation. The ctors are not public and a specifc seed cannot be used. 
+Random doesn't inherit from an interface so the implementations inherit from Random versus a static class. This makes it easier to swap in whichever implementation that suits the need. `RandomFactory` gives out a singleton instance of the implementations as a single Random instance per app domain is the recommendation. The ctors are not public and a specific seed cannot be used. 
 
 `LockRandom` simply makes pass-through calls to the base instance's methods with a lock, so using a specific seed technically is possible but not done. 
 
-`ThreadStaticRandom` and `ThreadLocalRandom` use similar approaches where a global RNG is used to seed the threads' Random instances. A specifc seed is meaningless and the base instance is unused. The global RNG implementations are not exactly the same so as to keep them as the original authors intended. 
+`ThreadStaticRandom` and `ThreadLocalRandom` use similar approaches where a global RNG is used to seed the threads' Random instances. A specific seed is meaningless and the base instance is unused. The global RNG implementations are not exactly the same so as to keep them as the original authors intended. 
 
 To address the shortcomings, a static member with thread-safe impl as `Random.Shared` was added in `net6.0`. It uses `ThreadStatic` underneath ([see pr](https://github.com/dotnet/runtime/pull/50297/files#diff-6fa7e54f57878bb019a11332aeeb42c75430a0ac87c78cdfa9ce382137b3d851)).
 
