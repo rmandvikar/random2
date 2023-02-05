@@ -124,7 +124,11 @@ namespace rm.Random2Test
 		[TestFixture]
 		public class Verify_Correctness
 		{
-			[Explicit]
+			// if the test were to fail it would fail quickly at start but not later,
+			// so repeat it many times with a small timeout to force a failure
+			private const int repeatCount = 20;
+
+			[Repeat(repeatCount)]
 			[Test(Description = "Next() results in 0s once in a while.")]
 			public void Verify_Correctness_Random()
 			{
@@ -132,7 +136,7 @@ namespace rm.Random2Test
 				VerifyCorrectness(() => random.Next());
 			}
 
-			[Explicit]
+			[Repeat(repeatCount)]
 			[Test]
 			public void Verify_Correctness_LockRandom()
 			{
@@ -140,7 +144,7 @@ namespace rm.Random2Test
 				VerifyCorrectness(() => random.Next());
 			}
 
-			[Explicit]
+			[Repeat(repeatCount)]
 			[Test]
 			public void Verify_Correctness_ThreadStaticRandom()
 			{
@@ -148,7 +152,7 @@ namespace rm.Random2Test
 				VerifyCorrectness(() => random.Next());
 			}
 
-			[Explicit]
+			[Repeat(repeatCount)]
 			[Test]
 			public void Verify_Correctness_ThreadLocalRandom()
 			{
@@ -156,14 +160,14 @@ namespace rm.Random2Test
 				VerifyCorrectness(() => random.Next());
 			}
 
-			[Explicit]
+			[Repeat(repeatCount)]
 			[Test]
 			public void Verify_Correctness_NewInstance()
 			{
 				VerifyCorrectness(() => new Random().Next());
 			}
 
-			[Explicit]
+			[Repeat(repeatCount)]
 			[Test]
 			public void Verify_Correctness_NewGuidAsSeed()
 			{
@@ -171,7 +175,7 @@ namespace rm.Random2Test
 			}
 
 #if NET6_0_OR_GREATER
-			[Explicit]
+			[Repeat(repeatCount)]
 			[Test]
 			public void Verify_Correctness_SharedRandom()
 			{
@@ -191,9 +195,13 @@ namespace rm.Random2Test
 					}
 				});
 
+				const int timeoutInMilliseconds = 250;
+				var timeout = TimeSpan.FromMilliseconds(timeoutInMilliseconds);
+				var stopwatch = Stopwatch.StartNew();
+
 				// consecutive 0s count
 				var zeroes = 0;
-				while (true)
+				while (stopwatch.Elapsed.TotalSeconds <= timeout.TotalSeconds)
 				{
 					var next = randomFunc();
 
