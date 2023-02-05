@@ -128,28 +128,32 @@ namespace rm.Random2Test
 			[Test(Description = "Next() results in 0s once in a while.")]
 			public void Verify_Correctness_Random()
 			{
-				VerifyCorrectness(() => RandomFactory.GetRandom().Next());
+				var random = RandomFactory.GetRandom();
+				VerifyCorrectness(() => random.Next());
 			}
 
 			[Explicit]
 			[Test]
 			public void Verify_Correctness_LockRandom()
 			{
-				VerifyCorrectness(() => RandomFactory.GetLockRandom().Next());
+				var random = RandomFactory.GetLockRandom();
+				VerifyCorrectness(() => random.Next());
 			}
 
 			[Explicit]
 			[Test]
 			public void Verify_Correctness_ThreadStaticRandom()
 			{
-				VerifyCorrectness(() => RandomFactory.GetThreadStaticRandom().Next());
+				var random = RandomFactory.GetThreadStaticRandom();
+				VerifyCorrectness(() => random.Next());
 			}
 
 			[Explicit]
 			[Test]
 			public void Verify_Correctness_ThreadLocalRandom()
 			{
-				VerifyCorrectness(() => RandomFactory.GetThreadLocalRandom().Next());
+				var random = RandomFactory.GetThreadLocalRandom();
+				VerifyCorrectness(() => random.Next());
 			}
 
 			[Explicit]
@@ -171,7 +175,8 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Correctness_SharedRandom()
 			{
-				VerifyCorrectness(() => RandomFactory.GetSharedRandom().Next());
+				var random = RandomFactory.GetSharedRandom();
+				VerifyCorrectness(() => random.Next());
 			}
 #endif
 
@@ -191,7 +196,6 @@ namespace rm.Random2Test
 				while (true)
 				{
 					var next = randomFunc();
-					Console.WriteLine(next);
 
 					var isZero = next == 0;
 					if (isZero)
@@ -205,6 +209,7 @@ namespace rm.Random2Test
 
 					if (zeroes == 10)
 					{
+						Assert.Fail("incorrect: last 10 values are 0s");
 						break;
 					}
 				}
@@ -217,25 +222,29 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Perf_Random()
 			{
-				VerifyPerf(() => RandomFactory.GetRandom().Next());
+				var random = RandomFactory.GetRandom();
+				VerifyPerf(() => random.Next());
 			}
 
 			[Test]
 			public void Verify_Perf_LockRandom()
 			{
-				VerifyPerf(() => RandomFactory.GetLockRandom().Next());
+				var random = RandomFactory.GetLockRandom();
+				VerifyPerf(() => random.Next());
 			}
 
 			[Test]
 			public void Verify_Perf_ThreadStaticRandom()
 			{
-				VerifyPerf(() => RandomFactory.GetThreadStaticRandom().Next());
+				var random = RandomFactory.GetThreadStaticRandom();
+				VerifyPerf(() => random.Next());
 			}
 
 			[Test]
 			public void Verify_Perf_ThreadLocalRandom()
 			{
-				VerifyPerf(() => RandomFactory.GetThreadLocalRandom().Next());
+				var random = RandomFactory.GetThreadLocalRandom();
+				VerifyPerf(() => random.Next());
 			}
 
 			[Test]
@@ -254,7 +263,8 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Perf_SharedRandom()
 			{
-				VerifyPerf(() => RandomFactory.GetSharedRandom().Next());
+				var random = RandomFactory.GetSharedRandom();
+				VerifyPerf(() => random.Next());
 			}
 #endif
 
@@ -277,25 +287,29 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Distribution_Random()
 			{
-				VerifyDistribution(() => RandomFactory.GetRandom().Next(10));
+				var random = RandomFactory.GetRandom();
+				VerifyDistribution(() => random.Next(10));
 			}
 
 			[Test]
 			public void Verify_Distribution_LockRandom()
 			{
-				VerifyDistribution(() => RandomFactory.GetLockRandom().Next(10));
+				var random = RandomFactory.GetLockRandom();
+				VerifyDistribution(() => random.Next(10));
 			}
 
 			[Test]
 			public void Verify_Distribution_ThreadStaticRandom()
 			{
-				VerifyDistribution(() => RandomFactory.GetThreadStaticRandom().Next(10));
+				var random = RandomFactory.GetThreadStaticRandom();
+				VerifyDistribution(() => random.Next(10));
 			}
 
 			[Test]
 			public void Verify_Distribution_ThreadLocalRandom()
 			{
-				VerifyDistribution(() => RandomFactory.GetThreadLocalRandom().Next(10));
+				var random = RandomFactory.GetThreadLocalRandom();
+				VerifyDistribution(() => random.Next(10));
 			}
 
 			[Test]
@@ -314,7 +328,8 @@ namespace rm.Random2Test
 			[Test]
 			public void Verify_Distribution_SharedRandom()
 			{
-				VerifyDistribution(() => RandomFactory.GetSharedRandom().Next(10));
+				var random = RandomFactory.GetSharedRandom();
+				VerifyDistribution(() => random.Next(10));
 			}
 #endif
 
