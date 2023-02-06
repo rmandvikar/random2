@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -343,12 +345,19 @@ namespace rm.Random2Test
 
 			private void VerifyDistribution(Func<int> randomFunc)
 			{
-				const int iterations = 100;
+				const int iterations = 1_000;
+				var series = new ConcurrentBag<int>();
 				Parallel.For(0, iterations, i =>
 				{
 					var next = randomFunc();
-					Console.WriteLine(next);
+					series.Add(next);
 				});
+				Console.WriteLine("countMap");
+				var countMap = series.GroupBy(i => i).ToDictionary(g => g.Key, g => g.Count());
+				countMap.Select(x => $"value: {x.Key}, count: {x.Value,3}").OrderBy(x => x).ToList().ForEach(Console.WriteLine);
+				Console.WriteLine();
+				Console.WriteLine("series");
+				series.ToList().ForEach(x => Console.WriteLine(x));
 			}
 		}
 	}
