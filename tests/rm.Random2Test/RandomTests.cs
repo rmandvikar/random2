@@ -164,6 +164,13 @@ namespace rm.Random2Test
 
 			[Repeat(repeatCount)]
 			[Test]
+			public void Verify_Correctness_StaticThreadLocalRandom()
+			{
+				VerifyCorrectness(() => ThreadLocalRandom.Next());
+			}
+
+			[Repeat(repeatCount)]
+			[Test]
 			public void Verify_Correctness_NewInstance()
 			{
 				VerifyCorrectness(() => new Random().Next());
@@ -258,6 +265,12 @@ namespace rm.Random2Test
 			}
 
 			[Test]
+			public void Verify_Perf_StaticThreadLocalRandom()
+			{
+				VerifyPerf(() => ThreadLocalRandom.Next());
+			}
+
+			[Test]
 			public void Verify_Perf_NewInstance()
 			{
 				VerifyPerf(() => new Random().Next());
@@ -320,6 +333,12 @@ namespace rm.Random2Test
 			{
 				var random = RandomFactory.GetThreadLocalRandom();
 				VerifyDistribution(() => random.Next(10));
+			}
+
+			[Test]
+			public void Verify_Distribution_StaticThreadLocalRandom()
+			{
+				VerifyDistribution(() => ThreadLocalRandom.Next(10));
 			}
 
 			[Test]
