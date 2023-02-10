@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 
 namespace rm.Random2;
 
@@ -15,10 +14,6 @@ public class ThreadStaticRandom : Random
 	internal ThreadStaticRandom()
 		: base()
 	{ }
-
-#if !NET6_0_OR_GREATER
-	private static readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
-#endif
 
 	private Random CreateRandomIfNull()
 	{
@@ -35,14 +30,7 @@ public class ThreadStaticRandom : Random
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	private Random CreateRandom()
 	{
-		const int bytesCount = 4;
-#if NET6_0_OR_GREATER
-		byte[] buffer = RandomNumberGenerator.GetBytes(bytesCount);
-#else
-		byte[] buffer = new byte[bytesCount];
-		rngCrypto.GetBytes(buffer);
-#endif
-		return new Random(BitConverter.ToInt32(buffer, 0));
+		return RandomUtils.NewRandom();
 	}
 
 	public override int Next()

@@ -12,14 +12,6 @@ namespace rm.Random2;
 public class ThreadLocalRandom : Random
 {
 	/// <summary>
-	/// Random number generator used to generate seeds,
-	/// which are then used to create new random number
-	/// generators on a per-thread basis.
-	/// </summary>
-	private static readonly Random globalRandom = new();
-	private static readonly object locker = new();
-
-	/// <summary>
 	/// Random number generator.
 	/// </summary>
 	private static readonly ThreadLocal<Random> threadRandom = new(NewRandom);
@@ -31,10 +23,7 @@ public class ThreadLocalRandom : Random
 	/// </summary>
 	private static Random NewRandom()
 	{
-		lock (locker)
-		{
-			return new Random(globalRandom.Next());
-		}
+		return RandomUtils.NewRandom();
 	}
 
 	private static Random random => threadRandom.Value!;
