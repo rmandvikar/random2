@@ -23,6 +23,28 @@ Random doesn't inherit from an interface so the implementations inherit from Ran
 
 To address the shortcomings, a static member with thread-safe impl as `Random.Shared` was added in `net6.0`. It uses `ThreadStatic` underneath ([see pr](https://github.com/dotnet/runtime/pull/50297/files#diff-6fa7e54f57878bb019a11332aeeb42c75430a0ac87c78cdfa9ce382137b3d851)).
 
+### Usage
+
+###### Local variable
+
+```cs
+// ok to capture in a local var
+var random = RandomFactory.GetThreadStaticRandom();
+var random = RandomFactory.GetThreadLocalRandom();
+var random = RandomFactory.GetLockRandom();
+```
+
+###### Static class member
+
+Note that it's ok to capture the `ThreadStaticRandom` instance too in a static class member, as every impl is a wrapper class.
+
+```cs
+// ok to capture in a static member
+private static readonly Random random = RandomFactory.GetThreadStaticRandom();
+private static readonly Random random = RandomFactory.GetThreadLocalRandom();
+private static readonly Random random = RandomFactory.GetLockRandom();
+```
+
 ### Tests
 
 - **Showcase_Issues**: Showcases different behaviors and problems with Random approaches. 
