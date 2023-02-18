@@ -19,7 +19,7 @@ Random doesn't inherit from an interface so the implementations inherit from Ran
 
 `LockRandom` simply makes pass-through calls to the base instance's methods with a lock, so using a specific seed technically is possible but not done. 
 
-`ThreadStaticRandom` and `ThreadLocalRandom` use similar approaches where a global RNG is used to seed the threads' Random instances. A specific seed is meaningless and the base instance is unused. The global RNG implementations are not exactly the same so as to keep them as the original authors intended. 
+`ThreadStaticRandom` and `ThreadLocalRandom` use similar approaches where a global RNG is used to seed the threads' Random instances. A specific seed is meaningless and the base instance is unused. In previous versions, the global RNG implementations were not exactly the same so as to keep them as the original authors intended, but using a cryptographic RNG for the global seed is better.
 
 To address the shortcomings, a static member with thread-safe impl as `Random.Shared` was added in `net6.0`. It uses `ThreadStatic` underneath ([see pr](https://github.com/dotnet/runtime/pull/50297/files#diff-6fa7e54f57878bb019a11332aeeb42c75430a0ac87c78cdfa9ce382137b3d851)).
 
