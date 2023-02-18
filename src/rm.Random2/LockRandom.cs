@@ -1,68 +1,67 @@
 ﻿using System;
 
-namespace rm.Random2
+namespace rm.Random2;
+
+/// <note>
+/// see https://devblogs.microsoft.com/pfxteam/getting-random-numbers-in-a-thread-safe-way/
+/// </note>
+public class LockRandom : Random
 {
-	/// <note>
-	/// see https://devblogs.microsoft.com/pfxteam/getting-random-numbers-in-a-thread-safe-way/
-	/// </note>
-	public class LockRandom : Random
+	private readonly object locker = new();
+
+	internal LockRandom()
+		: base()
+	{ }
+
+	internal LockRandom(int seed)
+		: base(seed)
+	{ }
+
+	public override int Next()
 	{
-		private readonly object locker = new object();
-
-		internal LockRandom()
-			: base()
-		{ }
-
-		internal LockRandom(int seed)
-			: base(seed)
-		{ }
-
-		public override int Next()
+		lock (locker)
 		{
-			lock (locker)
-			{
-				return base.Next();
-			}
+			return base.Next();
 		}
+	}
 
-		public override int Next(int maxValue)
+	public override int Next(int maxValue)
+	{
+		lock (locker)
 		{
-			lock (locker)
-			{
-				return base.Next(maxValue);
-			}
+			return base.Next(maxValue);
 		}
+	}
 
-		public override int Next(int minValue, int maxValue)
+	public override int Next(int minValue, int maxValue)
+	{
+		lock (locker)
 		{
-			lock (locker)
-			{
-				return base.Next(minValue, maxValue);
-			}
+			return base.Next(minValue, maxValue);
 		}
+	}
 
-		public override void NextBytes(byte[] buffer)
+	public override void NextBytes(byte[] buffer)
+	{
+		lock (locker)
 		{
-			lock (locker)
-			{
-				base.NextBytes(buffer);
-			}
+			base.NextBytes(buffer);
 		}
+	}
 
-		public override double NextDouble()
+	public override double NextDouble()
+	{
+		lock (locker)
 		{
-			lock (locker)
-			{
-				return base.NextDouble();
-			}
+			return base.NextDouble();
 		}
+	}
 
-		protected override double Sample()
+	protected override double Sample()
+	{
+		lock (locker)
 		{
-			lock (locker)
-			{
-				return base.Sample();
-			}
+			return base.Sample();
 		}
 	}
 }
