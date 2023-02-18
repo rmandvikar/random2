@@ -7,6 +7,8 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <Description>Thread-safe Random implementations.</Description>
     <PackageTags>random thread-safe</PackageTags>
     <RepositoryUrl>https://github.com/rmandvikar/random2</RepositoryUrl>
