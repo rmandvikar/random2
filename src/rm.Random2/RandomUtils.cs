@@ -9,8 +9,7 @@ public static class RandomUtils
 	/// which are then used to create new random number
 	/// generators on a per-thread basis.
 	/// </summary>
-	private static readonly Random globalRandom = new();
-	private static readonly object locker = new();
+	private static readonly LockRandom globalRandom = new();
 
 	/// <summary>
 	/// Creates a new instance of Random. The seed is derived
@@ -19,9 +18,6 @@ public static class RandomUtils
 	/// </summary>
 	public static Random NewRandom()
 	{
-		lock (locker)
-		{
-			return new Random(globalRandom.Next());
-		}
+		return new Random(globalRandom.Next());
 	}
 }
