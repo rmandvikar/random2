@@ -16,8 +16,7 @@ public static class RandomUtils
 
 	/// <summary>
 	/// Creates a new instance of Random. The seed is derived
-	/// from a global (static) instance of Random, rather
-	/// than time.
+	/// from a RandomNumberGenerator instance.
 	/// </summary>
 	public static Random NewRandom()
 	{

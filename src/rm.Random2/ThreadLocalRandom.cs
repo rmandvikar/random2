@@ -18,8 +18,7 @@ public class ThreadLocalRandom : Random
 
 	/// <summary>
 	/// Creates a new instance of Random. The seed is derived
-	/// from a global (static) instance of Random, rather
-	/// than time.
+	/// from a RandomNumberGenerator instance.
 	/// </summary>
 	private static Random NewRandom()
 	{
