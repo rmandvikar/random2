@@ -13,8 +13,12 @@
     <PackageTags>random thread-safe</PackageTags>
     <RepositoryUrl>https://github.com/rmandvikar/random2</RepositoryUrl>
     <PackageProjectUrl>https://github.com/rmandvikar/random2</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Authors>hippy</Authors>
     <Company>hippy</Company>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
