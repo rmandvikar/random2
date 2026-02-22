@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "dev"
+    open-pull-requests-limit: 5
+    #groups:
+    #  minor-and-patch-updates:
+    #    patterns:
+    #      - "*"
+    #    update-types:
+    #      - "minor"
+    #      - "patch"
+    #ignore:
+    #  - dependency-name: "*"
+    #    update-types:
+    #      - "version-update:semver-major"
