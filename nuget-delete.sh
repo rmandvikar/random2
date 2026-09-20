@@ -11,7 +11,7 @@ if [[ -z "$version" ]]; then
 	exit 1
 fi
 
-dotnet nuget delete rmandvikar.Random2 "$version" \
+dotnet nuget delete rm.Random2 "$version" \
 	-k $(< ~/dump/.nuget.apikey) \
 	-s https://api.nuget.org/v3/index.json \
 	--non-interactive
